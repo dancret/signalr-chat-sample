@@ -1,8 +1,10 @@
 Run commands:
 
-> docker build -t ChatSample
+> cd src/ChatSample
 
-> docker run -d -p 8080:80 --name MyChatApp ChatSample
+> docker build -t chatsample .
+
+> docker run -d -p 8080:80 --name MyChatApp chatsample
 
 References:
 - https://github.com/aspnet/SignalR-samples/tree/master/ChatSample
