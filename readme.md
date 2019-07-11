@@ -2,7 +2,7 @@ Run commands:
 
 > cd src/ChatSample
 
-> docker build -t chatsample .
+> docker build -t chatsample . <--- there is a dot here at the end
 
 > docker run -d -p 8080:80 --name MyChatApp chatsample
 
