@@ -1,6 +1,7 @@
 Run commands:
 
 > docker build -t ChatSample
+
 > docker run -d -p 8080:80 --name MyChatApp ChatSample
 
 References:
