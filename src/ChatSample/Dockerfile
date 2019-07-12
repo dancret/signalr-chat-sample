@@ -1,22 +1,16 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build-env
 WORKDIR /app
-EXPOSE 80
 
 # copy csproj and restore as distinct layers
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
-WORKDIR /src
-COPY ["ChatSample/ChatSample.csproj", "ChatSample/"]
-RUN dotnet restore "ChatSample/ChatSample.csproj"
-COPY . .
-WORKDIR "/src/ChatSample"
-RUN dotnet build "ChatSample.csproj" -c Release -o /app
+COPY *.csproj ./
+RUN dotnet restore
 
 # copy everything else and build
-FROM build AS publish
-RUN dotnet publish "ChatSample.csproj" -c Release -o /app
+COPY . ./
+RUN dotnet publish -c Release -o out
 
-# build final runtime image
-FROM base AS final
+# build runtime image
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS runtime-env
 WORKDIR /app
-COPY --from=publish /app .
+COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "ChatSample.dll"]
